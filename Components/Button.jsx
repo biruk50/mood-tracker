@@ -9,6 +9,5 @@ export default function Button(props){
         <button className={'rounded-full overflow-hidden duration-200 hover:opacity-60 border-2 border-solid border-green-600 ' + (dark? 'text-white bg-green-600' : 'text-green-600 ')}>
             <p className={'px-6 sm:px-10 whitespace-nowrap py-2 ' + fugaz.className}>{text}</p>
         </button>
-        
     )
 }
