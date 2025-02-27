@@ -1,5 +1,6 @@
 import React from "react"
 import { Fugaz_One} from "next/font/google";
+import Calendar from "./Calendar";
 
 const fugaz = Fugaz_One({ subsets: ["latin"] , weight: ['400']})
 
@@ -44,6 +45,7 @@ export default function Dashboard(){
           )
         })}
             </div>
+            <Calendar />
         </div>
         
     )
