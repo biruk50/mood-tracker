@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext, createContext } from 'react';
 import { auth ,db} from '../firebase';
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 const AuthContext = createContext();
  
 export function useAuth() {
@@ -35,8 +36,19 @@ export function AuthProvider({ children }) {
             setIsLoading(true);
             setGlobalUser(user);
             if (!user) { return}
-            
+            //if user exists, get the user data from the database
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+
+            let firebaseData ={};
+            if (docSnap.exists()) {
+                firebaseData = docSnap.data();
+                console.log("Document data:", firebaseData);
+            }
+
+            setGlobalData(firebaseData);
         }
+
         catch (error) { console.error(error);}
         finally {setIsLoading(false);}
 
@@ -46,7 +58,7 @@ export function AuthProvider({ children }) {
         
     }, [])
 
-    const value= {}
+    const value= {globalUser, globalData, signup, login, logout, isLoading};
     return(
         <AuthContext.Provider value={value}>
             {children}
