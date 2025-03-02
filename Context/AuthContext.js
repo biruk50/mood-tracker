@@ -56,9 +56,9 @@ export function AuthProvider({ children }) {
 
         return unsubscribe;
         
-    }, [])
+    }, []);
 
-    const value= {globalUser, globalData, signup, login, logout, isLoading};
+    const value= {globalUser, globalData, setGlobalData, signup, login, logout, isLoading};
     return(
         <AuthContext.Provider value={value}>
             {children}
