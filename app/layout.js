@@ -3,6 +3,7 @@ import "./globals.css";
 import Link from "next/link";
 import { AuthProvider } from "@/Context/AuthContext";
 import Head from "./head";
+import Logout from "@/Components/LogOut";
 
 const inter = Inter({ subsets: ["latin"]});
 const fugaz = Fugaz_One({ subsets: ["latin"] , weight: ['400']})
@@ -19,15 +20,13 @@ export default function RootLayout({ children }) {
       <Link href="/">
       <h1 className={'text-base sm:text-lg textGradient ' + fugaz.className }>Mood Tracker</h1>
       </Link>
-      <div className="flex items-center justify-between">
-        placeholder
-      </div>
+      <Logout/>
     </header>
   )
 
   const footer=(
     <footer className="p-4 sm:p-8 grid place-items-center">
-      <p className={'text-green-400 ' + fugaz.className}>created by  </p>
+      <p className={'text-green-400 ' + fugaz.className}>created by @Smoljames <br></br> tutorial followed by Biruk</p>
     </footer>
   )
   return (

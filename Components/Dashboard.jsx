@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { Fugaz_One} from "next/font/google";
 import Calendar from "./Calendar";
 import { useAuth } from "@/Context/AuthContext";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, sum } from "firebase/firestore";
 import { db } from "@/firebase";
 import Loading from "./Loading";
 import Login from "./Login";
@@ -13,12 +13,7 @@ const fugaz = Fugaz_One({ subsets: ["latin"] , weight: ['400']})
 export default function Dashboard(){
     const {globalUser, globalData , setGlobalData ,isLoading} = useAuth();
     const [data, setData] = useState({});
-
-    const statuses={
-        nums_day:4,
-        time_remaining: '13:14:26',
-        date: (new Date()).toDateString(),
-    }
+    const now = new Date();
 
     const moods = {
         '&*@#$': '😭',
@@ -29,11 +24,27 @@ export default function Dashboard(){
       }
     
     function countValues(){
-
+      let total_number_of_days = 0;
+      let sum_moods = 0;
+      for (let year in data) {
+        for (let month in data[year]) {
+          for (let day in data[year][month]) {
+            total_number_of_days++;
+            sum_moods += data[year][month][day];
+          }
+        }
+      }
+      return {num_days:total_number_of_days, average_mood: sum_moods / total_number_of_days};
     }
+
+    const statuses={
+      ...countValues(),
+      time_remaining: `${ 24 - now.getHours()} hours :${60 - now.getMinutes()} minutes`
+
+  }
+
     async function handleSetMood(mood) {
       try {
-        const now = new Date();
         const year = now.getFullYear();
         const month = now.getMonth() ;
         const day = now.getDate();
@@ -106,7 +117,7 @@ export default function Dashboard(){
           )
         })}
             </div>
-            <Calendar data={data} handleSetMood={handleSetMood}/>
+            <Calendar handleSetMood={handleSetMood}/>
         </div>
         
     )
